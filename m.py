@@ -141,6 +141,9 @@ def del_cn(str):
 
 
 
+
+
+
 def error(msg):
     print(msg+' error')
     a=input('按enter（return）键退出')
