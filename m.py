@@ -124,10 +124,16 @@ def set_info(file,art='',alb='',img='',nam=''):
     mu.save()
 
 def del_cn(str):
-    p=re.search('(\(.*?\))',str).group(1)
-    if p:
-        str=str.replace(p,'')
+    try:
+        p=re.search('(\(.*?\))',str)
+    except AttributeError:
+        pass
+    else:
+        if p:
+            str=str.replace(p,'')
     return str
+
+
 
 
 
