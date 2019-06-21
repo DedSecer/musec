@@ -125,20 +125,13 @@ def set_info(file,art='',alb='',img='',nam=''):
 
 def del_cn(str):
     try:
-        p=re.search('(\(.*?\))',str)
+        p=re.search('(\(.*?\))',str).group(1)
     except AttributeError:
         pass
     else:
         if p:
             str=str.replace(p,'')
     return str
-
-
-
-
-
-
-
 
 
 
