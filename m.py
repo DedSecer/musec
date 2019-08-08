@@ -7,6 +7,6 @@ from requests.packages import urllib3
 #disable ssl warning:
 urllib3.disable_warnings()
 
-#dl_song(url,path,system,type='mp3')
-#dl_album(mid,path,system,type='mp3',ct=0)   ct:Start to download from ct
+dl_song('https://y.qq.com/n/yqq/song/003pp8Ns3fyc22.html','/Users/kenan/Desktop/de',system='mac',type='mp3')  #type:mp3,m4a
+#dl_album(mid,path,system,type='mp3',ct=0)   #ct:Start to download from ct
 

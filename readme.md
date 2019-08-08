@@ -8,7 +8,7 @@ Albums
 
 Three Party Lib:requests,mutagen
 
-v1.0
+v1.0.1
 
 
 

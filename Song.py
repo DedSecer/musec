@@ -51,24 +51,28 @@ class Song():
 
 
     def download(self,path,errstr='',by_alb=False):
-        dlurl='http://dl.stream.qqmusic.qq.com/C400' + self.mid+ '.'+self.type+'?vkey=' + self.vkey+ '&guid=6612300644&uin=0&fromtag=66'
-
+        if self.type=='m4a':
+            dlurl='http://dl.stream.qqmusic.qq.com/C400' + self.mid+ '.'+self.type+'?vkey=' + self.vkey+ '&guid=6612300644&uin=0&fromtag=66'
+        elif self.type=='mp3':
+            dlurl = 'http://dl.stream.qqmusic.qq.com/M500' + self.mid + '.' + self.type + '?vkey=' + self.vkey + '&guid=6612300644&uin=0&fromtag=55'
         h=get(dlurl,verify=False,headers=self.headers)
 
         if self.system=='mac':
-            song_path=path+'/'+self.name+'.m4a'
+            if not errstr:
+                errstr=compile('[/]')
+            song_path=path+'/'+sub(errstr,' ',self.name)+'.'+self.type
             with open(song_path,'wb') as f:
                 f.write(h.content)
 
         elif self.system=='windows':
             if not errstr:
-                errstr=errstr=compile('[<>/\\|:"*?]')
-            song_path=path+'/'+sub(errstr,' ',self.name)+'.'+type
+                errstr=compile('[<>/\\|:"*?]')
+            song_path=path+'/'+sub(errstr,' ',self.name)+'.'+self.type
             with open(song_path,'wb') as f:
                 f.write(h.content)
 
         set_info(song_path,
-                 type=type,
+                 type=self.type,
                  nam=self.name,
                  art=self.art,
                  alb=self.alb,
