@@ -31,11 +31,12 @@ def dl_album(mid,path,system,type='mp3',ct=0):#  ct:Start to download from ct
     imgcon=get(imgurl,headers=headers,verify=False).content
 
     if system=='mac':
-        apath=path+'/'+alb
-        errstr=''
+        errstr=re.compile('[/]')
+        apath=path+'/'+re.sub(errstr,' ',alb)
+
     elif system=='windows':
         errstr=re.compile('[<>/\\|:"*?]')
-        apath=path+'\\'+re.sub(errstr,'',alb)
+        apath=path+'\\'+re.sub(errstr,' ',alb)
 
 
     # start_to_download:
@@ -47,7 +48,7 @@ def dl_album(mid,path,system,type='mp3',ct=0):#  ct:Start to download from ct
     for n in list(range(ct,ln)):
         m=m_list[n]
         url='https://y.qq.com/n/yqq/song/'+m+'.html'
-        asong=Song(url,art=art,alb=alb,img=imgcon,system=system)
-        asong.download(apath,errstr)
+        asong=Song(url,art=art,alb=alb,img=imgcon,system=system,type=type)
+        asong.download(apath,errstr,by_alb=True)
         print(asong.name,'\tdownload successful!\t[',n+1,'/',ln,']')
 
