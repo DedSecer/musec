@@ -30,7 +30,10 @@ class Song():
         self.name = unescape(search('''<h1 class="data__name_txt" .*?>(.*?)</h1>''', h.text).group(1))
 
         if not alb:
-            self.alb = unescape(search('<li class="data_info__item">专辑：.*?title="(.*?)">', h.text).group(1))
+            try:
+                self.alb = unescape(search('<li class="data_info__item">专辑：.*?title="(.*?)">', h.text).group(1))
+            except AttributeError:
+                self.alb=' '
         else:
             self.alb=alb
 
@@ -50,7 +53,7 @@ class Song():
 
 
 
-    def download(self,path,errstr='',by_alb=False):
+    def download(self,path,errcha='',originality=True):
         if self.type=='m4a':
             dlurl='http://dl.stream.qqmusic.qq.com/C400' + self.mid+ '.'+self.type+'?vkey=' + self.vkey+ '&guid=6612300644&uin=0&fromtag=66'
         elif self.type=='mp3':
@@ -58,16 +61,16 @@ class Song():
         h=get(dlurl,verify=False,headers=self.headers)
 
         if self.system=='mac':
-            if not errstr:
-                errstr=compile('[/]')
-            song_path=path+'/'+sub(errstr,' ',self.name)+'.'+self.type
+            if not errcha:
+                errcha=compile('[/]')
+            song_path=path+'/'+sub(errcha,' ',self.name)+'.'+self.type
             with open(song_path,'wb') as f:
                 f.write(h.content)
 
         elif self.system=='windows':
-            if not errstr:
-                errstr=compile('[<>/\\|:"*?]')
-            song_path=path+'/'+sub(errstr,' ',self.name)+'.'+self.type
+            if not errcha:
+                errcha=compile('[<>/\\|:"*?]')
+            song_path=path+'/'+sub(errcha,' ',self.name)+'.'+self.type
             with open(song_path,'wb') as f:
                 f.write(h.content)
 
@@ -77,7 +80,7 @@ class Song():
                  art=self.art,
                  alb=self.alb,
                  img=self.img)
-        if not by_alb:
+        if originality:
             print(self.name+"\ndownload successful")
 
 

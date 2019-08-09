@@ -1,7 +1,7 @@
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, TALB
 from mutagen.mp4 import MP4Cover
 from mutagen import File
-from re import search
+from re import search,compile
 from requests.packages import urllib3
 
 #three_party_lib:mutagen
@@ -64,3 +64,10 @@ def del_cn(str):
             str=str.replace(p,'')
     return str
 
+def get_errcha(system):#get different error character in different system
+    if system == 'mac':
+        errcha=compile('[/]')
+
+    elif system == 'windows':
+        errcha=compile('[<>/\\|:"*?]')
+    return errcha
