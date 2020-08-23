@@ -11,6 +11,10 @@ urllib3.disable_warnings()
 
 class Song():
     def __init__(self,url,system,art='',alb='',img='',type='mp3',):
+        self.mid=search('yqq/song/(.*?).html',url).group(1)
+        self.guid='8962339369'
+        self.uin=0
+
         self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
         self.system=system
         self.type=type
@@ -19,12 +23,11 @@ class Song():
         h=get(url, verify=False, headers=self.headers)
 
         #get_vkey:
-        self.mid=search('yqq/song/(.*?).html',url).group(1)
+        getvkurl='https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":" %s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}'%(self.guid,self.guid,self.mid,self.uin,self.uin)
 
-        getvkurl='https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg?&jsonpCallback=MusicJsonCallback&cid=205361747&songmid='+self.mid+'&filename=C400'+self.mid+'.m4a&guid=6612300644'
-        ukurl= get(getvkurl, verify=False, headers=self.headers)
-        self.vkey=search(r'"vkey":"(.*)"',ukurl.text).group(1)
-
+        vkres= get(getvkurl, verify=False, headers=self.headers)
+        purl = vkres.json()['req_0']['data']['midurlinfo'][0]['purl']
+        self.url = 'http://dl.stream.qqmusic.qq.com/' + purl
 
         #info:
         self.name = unescape(search('''<h1 class="data__name_txt" .*?>(.*?)</h1>''', h.text).group(1))
@@ -54,12 +57,9 @@ class Song():
 
 
     def download(self,path,errcha='',originality=True):
-        if self.type=='m4a':
-            dlurl='http://dl.stream.qqmusic.qq.com/C400' + self.mid+ '.'+self.type+'?vkey=' + self.vkey+ '&guid=6612300644&uin=0&fromtag=66'
-        elif self.type=='mp3':
-            dlurl = 'http://dl.stream.qqmusic.qq.com/M500' + self.mid + '.' + self.type + '?vkey=' + self.vkey + '&guid=6612300644&uin=0&fromtag=55'
-        h=get(dlurl,verify=False,headers=self.headers)
-
+        h=get(self.url,verify=False,headers=self.headers)
+        
+        
         if self.system=='mac':
             if not errcha:
                 errcha=compile('[/]')
