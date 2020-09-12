@@ -8,14 +8,27 @@ import os
 urllib3.disable_warnings()
 
 
-pfile_path='~/.config/musec/setting.json'
+home_path=os.environ['HOME']
+pfile_path = os.path.join(home_path, '.config/musec/setting.json')
 
 if os.path.exists(pfile_path):
     with open(pfile_path) as profile:
         setting = json.load(profile)
 else:
-    with open('./setting.json') as profile:
-        setting = json.load(profile)
+    try:
+        os.mkdir(os.path.join(home_path, '.config/musec'))
+    except:
+        pass
+
+    setting = {
+    "donwload_path": "/home/ds/Downloads",
+    "download_format": "m4a",
+    "download_info": True,
+    "platform": "unix",
+    "error_cha": None
+}
+    with open(pfile_path,'w') as profile:
+       json.dump(setting, profile, indent=4)
 
 errcha   = setting['error_cha']
 
