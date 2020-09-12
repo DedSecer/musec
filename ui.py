@@ -8,7 +8,11 @@ import os
 urllib3.disable_warnings()
 
 
-home_path=os.environ['HOME']
+try:
+    home_path=os.environ['HOME']
+except KeyError:
+    home_path=os.path.join(os.environ['HOMEDRIVE'],os.environ['HOMEPATH'])
+
 pfile_path = os.path.join(home_path, '.config/musec/setting.json')
 
 if os.path.exists(pfile_path):
