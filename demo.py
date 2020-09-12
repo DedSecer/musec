@@ -1,5 +1,7 @@
 from downloader import dl_album,dl_song,dl_plist
 from requests.packages import urllib3
+import json
+import os
 
 #Three_Party_Lib:requests,mutagen
 
@@ -7,9 +9,24 @@ from requests.packages import urllib3
 #disable ssl warning:
 urllib3.disable_warnings()
 
-#type:mp3,m4a
 
-#dl_song(url, path, system, type)
-#dl_album(mid, path, system, type, ct=0)   #ct:Start to download from ct
-#dl_plist(url, path, system, type, ct=0)#a function to download songs from QQMusic playlist
+pfile_path='~/.config/musec/setting.json'
 
+if os.path.exists(pfile_path):
+    with open(pfile_path) as profile:
+        setting = json.load(profile)
+else:
+    with open('./setting.json') as profile:
+        setting = json.load(profile)
+
+path     = setting['donwload_path']
+platform = setting['platform']
+sformat  = setting['download_format']
+info     = setting['download_info']
+errcha   = setting['error_cha']
+
+#dl_song(mid, path, platform, info, errcha, sformat)
+
+# ct:Start to download from ct
+#dl_album(mid, path, platform, info, errcha, sformat, ct=0)
+#dl_plist(mid, path, platform, info, errcha, sformat, ct=0)

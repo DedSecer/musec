@@ -2,15 +2,9 @@ from mutagen.id3 import ID3, APIC, TIT2, TPE1, TALB
 from mutagen.mp4 import MP4Cover
 from mutagen import File
 from re import search,compile
-from requests.packages import urllib3
 
-#three_party_lib:mutagen
-
-#disable ssl warning:
-urllib3.disable_warnings()
-
-def set_info(file, type, art='', alb='', img='', nam=''):
-    if type == 'm4a':
+def set_info(file, sformat, art='', alb='', img='', nam=''):
+    if sformat == 'm4a':
         mu = File(file)
         if art:
             mu['©ART'] = art
@@ -21,11 +15,11 @@ def set_info(file, type, art='', alb='', img='', nam=''):
         if nam:
             mu['©nam'] = nam
         mu.save()
-    elif type=='mp3':
+    elif sformat=='mp3':
         audio = ID3(file)
         if img:
             #img:
-            audio['APIC'] = APIC(encoding=3, mime='image/jpeg', type=3, desc=u'Cover', data=img)
+            audio['APIC'] = APIC(encoding=3, mime='image/jpeg', sformat=3, desc=u'Cover', data=img)
         if nam:
             #title
             audio['TIT2'] = TIT2(encoding=3, text=[nam])
@@ -49,13 +43,13 @@ def del_cn(str):
             str = str.replace(p,'')
     return str
 
-def get_errcha(system):#get different error character in different system
-    if system == 'unix':
+def get_errcha(platform):#get different error character in different system platform
+    if platform == 'unix':
         errcha = compile('[/]')
 
-    elif system == 'windows':
+    elif platform == 'windows':
         errcha = compile('[<>/\\|:"*?]')
     else:
-        print('Please input currect system')
+        print('Please input currect system platform')
         exit(1)
     return errcha
