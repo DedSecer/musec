@@ -2,39 +2,33 @@ from downloader import dl_album,dl_song,dl_plist
 from requests.packages import urllib3
 import json
 import os
+from shutil import copy as shutil_copy
 
 
 #disable ssl warning:
 urllib3.disable_warnings()
 
 
-try:
+try: # unix
     home_path=os.environ['HOME']
-except KeyError:
+except KeyError: # windows
     home_path=os.path.join(os.environ['HOMEDRIVE'],os.environ['HOMEPATH'])
 
 pfile_path = os.path.join(home_path, '.config/musec/setting.json')
 
 if os.path.exists(pfile_path):
-    with open(pfile_path) as profile:
-        setting = json.load(profile)
+    pass
 else:
     try:
         os.mkdir(os.path.join(home_path, '.config/musec'))
     except:
         pass
+    shutil_copy('./config/setting.json',pfile_path)
 
-    setting = {
-    "donwload_path": "/home/ds/Downloads",
-    "download_format": "m4a",
-    "download_info": True,
-    "platform": "unix",
-    "error_cha": None
-}
-    with open(pfile_path,'w') as profile:
-       json.dump(setting, profile, indent=4)
+with open(pfile_path) as profile:
+    setting = json.load(profile)
 
-errcha   = setting['error_cha']
+errcha = setting['error_cha']
 
 method = input('All donwload method:\n1) single\t2) album\t3) playlist\nChoose a method (default=1): ')
 mid = input('Mid: ')
