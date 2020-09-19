@@ -1,4 +1,4 @@
-import tool
+import tools
 from html import unescape
 import re
 from requests import get
@@ -49,7 +49,7 @@ class Musec():
         if h.status_code == 200:
             # filter error character
             if not errcha:
-                errcha = tool.get_errcha(self.platform)
+                errcha = tools.get_errcha(self.platform)
             filename = re.sub(errcha, '-' , self.name) + '.' + self.sformat
             song_path = os.path.join(path, filename)
 
@@ -57,7 +57,7 @@ class Musec():
                 f.write(h.content)
 
             if download_info:
-                tool.set_info(song_path, sformat=self.sformat, nam=self.name, art=self.art, alb=self.albn, img=self.img)
+                tools.set_info(song_path, sformat=self.sformat, nam=self.name, art=self.art, alb=self.albn, img=self.img)
             if originality:
                 print(self.name + "\ndownload successful")
         else:

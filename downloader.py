@@ -1,4 +1,4 @@
-import tool
+import tools
 import re
 from requests import get
 import os
@@ -17,7 +17,7 @@ def dl_album(mid, path, platform, download_info=True, errcha='', sformat='m4a', 
     m_list= re.findall('''<a\s*href="//y.qq.com/n/yqq/song/(.*?).html"\s*title="''', h.text)
 
     #album_info:
-    art = tool.del_cn(re.search('<a\shref=.*?data-mid=.*?title="(.*?)">', h.text, re.S).group(1))
+    art = tools.del_cn(re.search('<a\shref=.*?data-mid=.*?title="(.*?)">', h.text, re.S).group(1))
     art = unescape(art)
     alb = re.search('''albumname : "(.*?)"''', h.text).group(1)
     alb = unescape(alb)
@@ -68,7 +68,7 @@ def dl_mlist(mlist, path, platform, download_info=True, errcha='', sformat='m4a'
     complete = 0
     fail = 0
 
-    errcha = tool.get_errcha(platform)
+    errcha = tools.get_errcha(platform)
     apath = os.path.join(path, re.sub(errcha, '-', list_n))
 
     if not os.path.exists(apath):
