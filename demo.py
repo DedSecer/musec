@@ -16,7 +16,7 @@ if os.path.exists(pfile_path):
     with open(pfile_path) as profile:
         setting = json.load(profile)
 else:
-    with open('./setting.json') as profile:
+    with open('./config/setting.json') as profile:
         setting = json.load(profile)
 
 path     = setting['donwload_path']
