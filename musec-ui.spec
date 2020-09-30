@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['Musec.py','downloader.py','tools.py','musec-ui.py'],
+a = Analysis(['musec-ui.py','Musec.py','downloader.py','tools.py'],
              pathex=['/home/ds/Repo/musec'],
              binaries=[],
              datas=[('config/setting.json','config')],
