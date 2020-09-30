@@ -6,14 +6,24 @@ from re import search,compile
 def set_info(file, sformat, art='', alb='', img='', nam=''):
     if sformat == 'm4a':
         mu = File(file)
-        if art:
-            mu['©ART'] = art
-        if alb:
-            mu['©alb'] = alb
-        if img:
-            mu['covr'] = [MP4Cover(img)]
-        if nam:
-            mu['©nam'] = nam
+        for k in mu.keys():
+            if 'Art' in k and art:
+                mu[k] = art
+            elif 'alb' in k and alb:
+                mu[k] = alb
+            elif 'nam' in k and nam:
+                mu[k] = nam
+            elif k == 'covr':
+                mu[k] = [MP4Cover(img)]
+
+       # if art:
+       #     mu['©ART'] = art
+       # if alb:
+       #     mu['©alb'] = alb
+       # if img:
+       #     mu['covr'] = [MP4Cover(img)]
+       # if nam:
+       #     mu['©nam'] = nam
         mu.save()
     elif sformat=='mp3':
         audio = ID3(file)
