@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import tools
 import re
 from requests import get

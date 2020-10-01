@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, TALB
 from mutagen.mp4 import MP4Cover
 from mutagen import File

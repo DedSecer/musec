@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 from downloader import dl_album,dl_song,dl_plist
 from requests.packages import urllib3
 import json
