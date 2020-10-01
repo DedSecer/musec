@@ -51,12 +51,12 @@ def dl_plist(lid, path, platform, download_info=True, errcha='', sformat='m4a', 
 
     h = get(url, verify=False, headers=headers)
     dir = h.json()
-    songlist = []                           # list including the name of songs in the playlist
-    songmid = []                            # list inclouding the songmid of songs in the playlist
+    #songlist = []                           # list including the name of songs in the playlist
+    songmid = []                            # list including the songmid of songs in the playlist
     dissname = dir['cdlist'][0]['dissname'] # name of the playlist
 
     for a in dir['cdlist'][0]['songlist']:
-        songlist.append(a['name'])
+        #songlist.append(a['name'])
         songmid.append(a['mid'])
     dl_mlist(songmid, path, platform=platform, download_info=download_info, errcha=errcha, sformat=sformat, ct=ct, list_n=dissname)
 
@@ -81,7 +81,7 @@ def dl_mlist(mlist, path, platform, download_info=True, errcha='', sformat='m4a'
 
     for n in list(range(ct, ln)):
         mid = mlist[n]
-        asong = Musec(mid, platform=platform, albn=list_n, art=art, img=imgcon, sformat=sformat)
+        asong = Musec(mid, platform=platform, art=art, img=imgcon, sformat=sformat)
         scode=asong.download(apath, errcha, download_info=download_info, originality=False)
         if scode == 200:
             print('%s download successful!\t[%d/%d]' % (asong.name, n+1, ln))
