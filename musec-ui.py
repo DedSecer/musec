@@ -9,12 +9,12 @@ from shutil import copy as shutil_copy
 
 #disable ssl warning:
 urllib3.disable_warnings()
-
+curdir = os.path.dirname(__file__)
 
 try: # unix
-    home_path=os.environ['HOME']
+    home_path = os.environ['HOME']
 except KeyError: # windows
-    home_path=os.path.join(os.environ['HOMEDRIVE'],os.environ['HOMEPATH'])
+    home_path = os.path.join(os.environ['HOMEDRIVE'],os.environ['HOMEPATH'])
 
 pfile_path = os.path.join(home_path, '.config/musec/setting.json')
 
@@ -25,7 +25,7 @@ else:
         os.mkdir(os.path.join(home_path, '.config/musec'))
     except:
         pass
-    shutil_copy('./config/setting.json',pfile_path)
+    shutil_copy(curdir + '/config/setting.json',pfile_path)
 
 with open(pfile_path) as profile:
     setting = json.load(profile)

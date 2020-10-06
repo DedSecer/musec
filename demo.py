@@ -11,14 +11,14 @@ import os
 #disable ssl warning:
 urllib3.disable_warnings()
 
-
-pfile_path='~/.config/musec/setting.json'
+curdir = os.path.dirname(__file__)
+pfile_path = '~/.config/musec/setting.json'
 
 if os.path.exists(pfile_path):
     with open(pfile_path) as profile:
         setting = json.load(profile)
 else:
-    with open('./config/setting.json') as profile:
+    with open(curdir + '/config/setting.json') as profile:
         setting = json.load(profile)
 
 path     = setting['donwload_path']
