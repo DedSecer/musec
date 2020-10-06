@@ -12,8 +12,7 @@ outdepenfiles = $(patsubst %.c, %.so, $(cdepenfiles))
 cfiles = $(patsubst %.py, %.c , $(files))
 outfiles = $(patsubst %.c, %, $(cfiles))
 
-python = python3.8
-python_include=/usr/include/$(python)
+python_include=/usr/include/python3.8
 
 
 %.c: %.py
