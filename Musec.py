@@ -8,7 +8,6 @@ import os
 class Musec():
     def __init__(self, mid, platform, albn='', art='', img='', sformat='m4a'):
         self.guid = '8962339369'
-        self.uin = 0
         self.mid = mid
 
         self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
@@ -38,14 +37,20 @@ class Musec():
         else:
             self.art = unescape(re.search('<div class="data__singer" title="(.*?)">',h.text).group(1))
 
-    def download(self, path, errcha='', download_info=True, originality=True):
+    def get_download_url(self, uin='0', cookies=''):
         #get_vkey:
-        getvkurl = 'https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":" %s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' % (self.guid, self.guid, self.mid, self.uin, self.uin)
-        vkres = get(getvkurl, verify=False, headers=self.headers)
+        getvkurl = 'https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":" %s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' % (self.guid, self.guid, self.mid, uin, uin)
+        vkres = get(getvkurl, verify=False, headers=self.headers, cookies=cookies)
         purl = vkres.json()['req_0']['data']['midurlinfo'][0]['purl']
-        dlurl = 'http://dl.stream.qqmusic.qq.com/' + purl
 
-        h = get(dlurl, verify=False, headers=self.headers)
+        self.dlurl = 'http://dl.stream.qqmusic.qq.com/' + purl
+
+
+
+
+    def download(self, path, uin='0', cookies='', errcha='', download_info=True, originality=True):
+        self.get_download_url(uin, cookies)
+        h = get(self.dlurl, cookies=cookies, verify=False, headers=self.headers)
 
         if h.status_code == 200:
             # filter error character
