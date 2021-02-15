@@ -5,6 +5,7 @@ from requests.packages import urllib3
 import json
 import os
 import platform as pf
+import shutil
 
 # Three_Party_Lib:requests,mutagen
 
@@ -20,12 +21,14 @@ elif pf.system() == 'Windows':
     pfile_path = os.path.join(os.environ['APPDATA'],'musec\\setting.json')
 
 
-if os.path.exists(pfile_path):
-    with open(pfile_path) as profile:
-        setting = json.load(profile)
-else:
-    with open(os.path.join(curdir,'config/setting.json')) as profile:
-        setting = json.load(profile)
+if not os.path.exists(pfile_path):
+    if not os.path.exists(os.path.split(pfile_path)[0]):
+        os.makedirs(os.path.split(pfile_path)[0])
+    shutil.copyfile('config/setting.json',pfile_path)
+
+with open(pfile_path) as profile:
+    setting = json.load(profile)
+
 
 path     = setting['donwload_path']
 sformat  = setting['download_format']
