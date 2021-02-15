@@ -10,7 +10,7 @@ class Musec():
         self.guid = '8962339369'
         self.mid = mid
 
-        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
+        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
         self.platform = platform
         self.sformat = sformat
 
@@ -39,7 +39,9 @@ class Musec():
 
     def get_download_url(self, uin='0', cookies=''):
         #get_vkey:
-        getvkurl = 'https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":" %s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' % (self.guid, self.guid, self.mid, uin, uin)
+        getvkurl = 'https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":"%s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' \
+                    % (self.guid, self.guid, self.mid, uin, uin)
+
         vkres = get(getvkurl, verify=False, headers=self.headers, cookies=cookies)
         purl = vkres.json()['req_0']['data']['midurlinfo'][0]['purl']
 
@@ -63,7 +65,14 @@ class Musec():
                 f.write(h.content)
 
             if download_info:
-                tools.set_info(song_path, sformat=self.sformat, nam=self.name, art=self.art, alb=self.albn, img=self.img)
+                tools.set_info(
+                    song_path,
+                    sformat=self.sformat,
+                    nam=self.name,
+                    art=self.art,
+                    alb=self.albn,
+                    img=self.img)
+
             if originality:
                 print(self.name + "\ndownload successful")
         else:

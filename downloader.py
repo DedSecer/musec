@@ -13,7 +13,10 @@ def dl_song(mid, path, platform, download_info=True, uin='0', cookies='', errcha
 def dl_album(mid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0):
     # ct:Start to download from ct
     aburl = 'https://y.qq.com/n/yqq/album/' + mid + '.html'
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/'
+                      '74.0.3729.169 Safari/537.36'
+        }
     h = get(aburl, headers=headers, verify=False)
     m_list= re.findall('''<a\s*href="//y.qq.com/n/yqq/song/(.*?).html"\s*title="''', h.text)
 
@@ -25,7 +28,18 @@ def dl_album(mid, path, platform, download_info=True, uin='0', cookies='', errch
     imgurl = 'https:'+re.search('''<img\sid="albumImg"\s*src="(.*?)"\s*onerror''', h.text).group(1)
     imgcon = get(imgurl, headers=headers,verify=False).content
 
-    dl_mlist(m_list, path, platform=platform, download_info=download_info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat, ct=ct, art=art, list_n=alb, imgcon=imgcon)
+    dl_mlist(m_list,
+        path,
+        platform=platform,
+        download_info=download_info,
+        uin=uin,
+        cookies=cookies,
+        errcha=errcha,
+        sformat=sformat,
+        ct=ct,
+        art=art,
+        list_n=alb,
+        imgcon=imgcon)
 
 
 
@@ -40,13 +54,12 @@ def dl_plist(lid, path, platform, download_info=True, uin='0', cookies='', errch
         'sec-fetch-mod': 'cors',
         'orgin': 'https://y.qq.com',
         'sec-fetch-site': 'cors',
-        'referer': 'https://y.qq.com/n/yqq/playlist/'+lid+'.html',
+        'referer': 'https://y.qq.com/n/yqq/playlist/%s.html' % (lid),
         'accept-encoding': 'gzip, deflate, br',
         'accept-language': 'zh-CN,zh;q=0.9'
     }
-    url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&new_format=1&' \
-          'disstid='+lid+'&g_tk=1647959537&loginUin=2465216809&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&' \
-          'notice=0&platform=yqq.json&needNewCode=0'
+    url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&new_format=1&disstid=%s&g_tk=1647959537&loginUin=2465216809&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0' \
+        % (lid)
 
 
     h = get(url, verify=False, headers=headers)
@@ -58,7 +71,17 @@ def dl_plist(lid, path, platform, download_info=True, uin='0', cookies='', errch
     for a in dir['cdlist'][0]['songlist']:
         #songlist.append(a['name'])
         songmid.append(a['mid'])
-    dl_mlist(songmid, path, platform=platform, download_info=download_info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat, ct=ct, list_n=dissname)
+
+    dl_mlist(songmid,
+        path,
+        platform=platform,
+        download_info=download_info,
+        uin=uin,
+        cookies=cookies,
+        errcha=errcha,
+        sformat=sformat,
+        ct=ct,
+        list_n=dissname)
 
 def dl_mlist(mlist, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0, list_n='', art='' ,imgcon=''):   
     # Download songs from songmid list
@@ -82,17 +105,25 @@ def dl_mlist(mlist, path, platform, download_info=True, uin='0', cookies='', err
     for n in list(range(ct, ln)):
         mid = mlist[n]
         asong = Musec(mid, platform=platform, art=art, img=imgcon, sformat=sformat)
-        scode=asong.download(apath, uin=uin, cookies=cookies, errcha=errcha, download_info=download_info, originality=False)
+        scode=asong.download(apath,
+            uin=uin,
+            cookies=cookies,
+            errcha=errcha,
+            download_info=download_info,
+            originality=False)
+
         if scode == 200:
             print('%s download successful!\t[%d/%d]' % (asong.name, n+1, ln))
             complete += 1
             total += 1
         else:
-            print('[E]Fail to download %s,statu code:%d\t[%d/%d]' % (asong.name, scode, n+1, ln))
+            print('[E]Fail to download %s,statu code:%d\t[%d/%d]' \
+                % (asong.name, scode, n+1, ln))
             fail += 1
             total += 1
 
     if fail != 0:
-        print('Download complete.\ttotal:%d\tcomplete:%d\tfail:%d' % (ln, complete, fail))
+        print('Download complete.\ttotal:%d\tcomplete:%d\tfail:%d' \
+            % (ln, complete, fail))
     else:
         print('All download complete, no error output.')
