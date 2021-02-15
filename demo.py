@@ -27,8 +27,30 @@ sformat  = setting['download_format']
 info     = setting['download_info']
 errcha   = setting['error_cha']
 
-#dl_song(mid, path, platform, info, errcha, sformat)
+
+# login_info
+uin = '0'
+
+cookies_str = ''
+
+# load cookies from strings like this: 'aaa=bbb; ccc=ddd....'
+if cookies_str:
+    cookies = {}
+    for line in cookies_str.split(';'):
+        name,value=line.strip().split('=',1)
+        cookies[name]=value  
+
+# load cookies if exist cookies.json
+elif os.path.exists('cookies.json'):
+    with open('cookies.json') as f:
+        cookies = json.load(f)
+
+
+
+
+
+#dl_song(mid, path, platform, info, uin, cookies, errcha, sformat)
 
 # ct:Start to download from ct
-#dl_album(mid, path, platform, info, errcha, sformat, ct=0)
-#dl_plist(mid, path, platform, info, errcha, sformat, ct=0)
+#dl_album(mid, path, platform, info, uin, cookies, errcha, sformat, ct=0)
+#dl_plist(mid, path, platform, info, uin, cookies, errcha, sformat, ct=0)

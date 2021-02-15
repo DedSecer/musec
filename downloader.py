@@ -6,11 +6,11 @@ import os
 from Musec import Musec
 from html import unescape
 
-def dl_song(mid, path, platform, download_info=True, errcha='', sformat='m4a'):
+def dl_song(mid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a'):
     asong = Musec(mid, platform, sformat=sformat)
-    asong.download(path, errcha=errcha, download_info=download_info)
+    asong.download(path, uin=uin, cookies=cookies, errcha=errcha, download_info=download_info)
 
-def dl_album(mid, path, platform, download_info=True, errcha='', sformat='m4a', ct=0):
+def dl_album(mid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0):
     # ct:Start to download from ct
     aburl = 'https://y.qq.com/n/yqq/album/' + mid + '.html'
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
@@ -25,11 +25,11 @@ def dl_album(mid, path, platform, download_info=True, errcha='', sformat='m4a', 
     imgurl = 'https:'+re.search('''<img\sid="albumImg"\s*src="(.*?)"\s*onerror''', h.text).group(1)
     imgcon = get(imgurl, headers=headers,verify=False).content
 
-    dl_mlist(m_list, path, platform=platform, download_info=download_info, errcha=errcha, sformat=sformat, ct=ct, art=art, list_n=alb, imgcon=imgcon)
+    dl_mlist(m_list, path, platform=platform, download_info=download_info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat, ct=ct, art=art, list_n=alb, imgcon=imgcon)
 
 
 
-def dl_plist(lid, path, platform, download_info=True, errcha='', sformat='m4a', ct=0):
+def dl_plist(lid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0):
     # Download songs from QQMusic playlist
     # ct:Start to download from ct
     headers = {
@@ -58,9 +58,9 @@ def dl_plist(lid, path, platform, download_info=True, errcha='', sformat='m4a', 
     for a in dir['cdlist'][0]['songlist']:
         #songlist.append(a['name'])
         songmid.append(a['mid'])
-    dl_mlist(songmid, path, platform=platform, download_info=download_info, errcha=errcha, sformat=sformat, ct=ct, list_n=dissname)
+    dl_mlist(songmid, path, platform=platform, download_info=download_info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat, ct=ct, list_n=dissname)
 
-def dl_mlist(mlist, path, platform, download_info=True, errcha='', sformat='m4a', ct=0, list_n='', art='' ,imgcon=''):   
+def dl_mlist(mlist, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0, list_n='', art='' ,imgcon=''):   
     # Download songs from songmid list
     # ct:Start to download from ct
     
@@ -82,7 +82,7 @@ def dl_mlist(mlist, path, platform, download_info=True, errcha='', sformat='m4a'
     for n in list(range(ct, ln)):
         mid = mlist[n]
         asong = Musec(mid, platform=platform, art=art, img=imgcon, sformat=sformat)
-        scode=asong.download(apath, errcha, download_info=download_info, originality=False)
+        scode=asong.download(apath, uin=uin, cookies=cookies, errcha=errcha, download_info=download_info, originality=False)
         if scode == 200:
             print('%s download successful!\t[%d/%d]' % (asong.name, n+1, ln))
             complete += 1
