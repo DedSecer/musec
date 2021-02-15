@@ -26,11 +26,10 @@ platform = setting['platform']
 sformat  = setting['download_format']
 info     = setting['download_info']
 errcha   = setting['error_cha']
+uin      = setting['uin']
 
 
-# login_info
-uin = '0'
-
+# cookies:
 cookies_str = ''
 
 # load cookies from strings like this: 'aaa=bbb; ccc=ddd....'
