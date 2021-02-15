@@ -40,8 +40,8 @@ if cookies_str:
         cookies[name]=value  
 
 # load cookies if exist cookies.json
-elif os.path.exists('cookies.json'):
-    with open('cookies.json') as f:
+elif os.path.exists('config/cookies.json'):
+    with open('config/cookies.json') as f:
         cookies = json.load(f)
 
 
