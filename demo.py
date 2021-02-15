@@ -4,6 +4,7 @@ from downloader import dl_album,dl_song,dl_plist
 from requests.packages import urllib3
 import json
 import os
+import platform as pf
 
 # Three_Party_Lib:requests,mutagen
 
@@ -12,7 +13,12 @@ import os
 urllib3.disable_warnings()
 
 curdir = os.path.dirname(__file__)
-pfile_path = '~/.config/musec/setting.json'
+
+if pf.system() == 'Linux' or pf.system() == 'Darwin':
+    pfile_path = os.path.join(os.environ['HOME'],'.config/musec/setting.json')
+elif pf.system() == 'Windows':
+    pfile_path = os.path.join(os.environ['APPDATA'],'musec\\setting.json')
+
 
 if os.path.exists(pfile_path):
     with open(pfile_path) as profile:
@@ -22,11 +28,14 @@ else:
         setting = json.load(profile)
 
 path     = setting['donwload_path']
-platform = setting['platform']
 sformat  = setting['download_format']
 info     = setting['download_info']
 errcha   = setting['error_cha']
 uin      = setting['uin']
+
+platform = setting['platform']
+if platform == 'Auto':
+    platform = pf.system()
 
 
 # cookies:

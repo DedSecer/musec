@@ -3,6 +3,6 @@
     "donwload_path": "~/Downloads",
     "download_format": "m4a",
     "download_info": true,
-    "platform": "unix",
+    "platform": "Auto",
     "error_cha": null
 }

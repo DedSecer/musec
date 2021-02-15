@@ -45,10 +45,10 @@ def del_cn(str):
     return str
 
 def get_errcha(platform):#get different error character in different system platform
-    if platform == 'unix':
+    if platform == 'Linux' or platform == 'Darwin':
         errcha = compile('[/]')
 
-    elif platform == 'windows':
+    elif platform == 'Windows':
         errcha = compile('[<>/\\|:"*?]')
     else:
         print('Please input currect system platform')
