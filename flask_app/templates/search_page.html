@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='search_page.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='search_page.js') }}"></script>
+    <title>Search Page</title>
+</head>
+<body>
+    <h2>QQMmusic Searcher</h2>
+    <form class="search" id="form" action="./">
+        <input class="search" id="place" type="search" name="q" placeholder="请输入..."/>
+        <button class="search"><i>搜索</i></button>
+    </form>
+		
+</body>
+</html>
