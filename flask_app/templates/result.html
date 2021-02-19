@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>songname</th>
+            <th>singer</th>
+            <th>album</th>
+        </tr>
+
+        {% for i in datas %}
+        <tr>        
+            <th>{{ i['songname'] }}</th>
+            <th>{{ i['singer'][0]['name'] }}</th>
+            <th>{{ i['albumname'] }}</th>
+            <th>  <a href="/download/{{ i['songmid'] }}">download</a>  </th>
+        </tr>
+
+        {% endfor %}
+    </table>
+
+
+</body>
+</html>
