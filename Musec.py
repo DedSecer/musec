@@ -58,8 +58,8 @@ class Musec():
             # filter error character
             if not errcha:
                 errcha = tools.get_errcha(self.platform)
-            filename = re.sub(errcha, '-' , self.name) + '.' + self.sformat
-            song_path = os.path.join(path, filename)
+            self.filename = re.sub(errcha, '-' , self.name) + '.' + self.sformat
+            song_path = os.path.join(path, self.filename)
 
             with open(song_path, 'wb') as f:
                 f.write(h.content)
