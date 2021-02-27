@@ -92,17 +92,10 @@ def load_setting():
     # cookies
     cookies = ''
 
-    # load cookies from strings like this: 'aaa=bbb; ccc=ddd....'
-    cookies_str = ''
-    if cookies_str:
-        cookies = {}
-        for line in cookies_str.split(';'):
-            name,value=line.strip().split('=',1)
-            cookies[name]=value  
-
     # load cookies if exist cookies.json
-    elif os.path.exists('config/cookies.json'):
-        with open('config/cookies.json') as f:
+    cookies_path = os.path.join(os.path.split(pfile_path)[0],'cookies.json')
+    if os.path.exists(cookies_path):
+        with open(cookies_path) as f:
             cookies = json.load(f)
     return {
         'path': path,
