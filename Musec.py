@@ -37,7 +37,7 @@ class Musec():
         else:
             self.art = unescape(re.search('<div class="data__singer" title="(.*?)">',h.text).group(1))
 
-    def get_download_url(self, uin='0', cookies=''):
+    def get_download_url(self, uin='0', cookies={}):
         #get_vkey:
         getvkurl = 'https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":"%s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' \
                     % (self.guid, self.guid, self.mid, uin, uin)
@@ -50,7 +50,7 @@ class Musec():
 
 
 
-    def download(self, path, uin='0', cookies='', errcha='', download_info=True, originality=True):
+    def download(self, path, uin='0', cookies={}, errcha='', download_info=True, originality=True):
         self.get_download_url(uin, cookies)
         h = get(self.dlurl, cookies=cookies, verify=False, headers=self.headers)
 
