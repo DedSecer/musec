@@ -6,11 +6,24 @@ import os
 from Musec import Musec
 from html import unescape
 
-def dl_song(mid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a'):
+
+
+setting = tools.load_setting()
+uin = setting['uin']
+
+path = setting['path']
+sformat = setting['sformat']
+info = setting['info']
+errcha = setting['errcha']
+uin = setting['uin']
+cookies = setting['cookies']
+platform = setting['platform']
+
+def dl_song(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):
     asong = Musec(mid, platform, sformat=sformat)
     asong.download(path, uin=uin, cookies=cookies, errcha=errcha, download_info=download_info)
 
-def dl_album(mid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0):
+def dl_album(mid, ct=0, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):
     # ct:Start to download from ct
     aburl = 'https://y.qq.com/n/yqq/album/' + mid + '.html'
     headers = {
@@ -43,7 +56,7 @@ def dl_album(mid, path, platform, download_info=True, uin='0', cookies='', errch
 
 
 
-def dl_plist(lid, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0):
+def dl_plist(lid, ct=0, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):
     # Download songs from QQMusic playlist
     # ct:Start to download from ct
     headers = {
@@ -83,7 +96,7 @@ def dl_plist(lid, path, platform, download_info=True, uin='0', cookies='', errch
         ct=ct,
         list_n=dissname)
 
-def dl_mlist(mlist, path, platform, download_info=True, uin='0', cookies='', errcha='', sformat='m4a', ct=0, list_n='', art='' ,imgcon=''):   
+def dl_mlist(mlist, ct=0, list_n='', art='' ,imgcon='', path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):   
     # Download songs from songmid list
     # ct:Start to download from ct
     
