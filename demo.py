@@ -16,8 +16,7 @@ cookies = setting['cookies']
 platform = setting['platform']
 
 
-#dl_song(mid, path, platform, info, uin, cookies, errcha, sformat)
 
-# ct:Start to download from ct
-#dl_album(mid, path, platform, info, uin, cookies, errcha, sformat, ct=0)
-#dl_plist(mid, path, platform, info, uin, cookies, errcha, sformat, ct=0)
+#dl_song(mid, path, platform, info, uin, cookies, errcha, sformat)
+#dl_album(mid, ct=0, path, platform, info, uin, cookies, errcha, sformat)
+#dl_plist(mid, ct=0, path, platform, info, uin, cookies, errcha, sformat)
