@@ -4,6 +4,12 @@ from mutagen.mp4 import MP4Cover
 from mutagen import File
 from re import search,compile
 
+import platform as pf
+import json
+import os
+import shutil
+
+
 def set_info(file, sformat, art='', alb='', img='', nam=''):
     if sformat == 'm4a':
         mu = File(file)
@@ -54,3 +60,56 @@ def get_errcha(platform):#get different error character in different system plat
         print('Please input currect system platform')
         exit(1)
     return errcha
+
+def load_setting():
+        
+    if pf.system() == 'Linux' or pf.system() == 'Darwin':
+        pfile_path = os.path.join(os.environ['HOME'],'.config/musec/setting.json')
+    elif pf.system() == 'Windows':
+        pfile_path = os.path.join(os.environ['APPDATA'],'musec\\setting.json')
+
+
+    if not os.path.exists(pfile_path):
+        if not os.path.exists(os.path.split(pfile_path)[0]):
+            os.makedirs(os.path.split(pfile_path)[0])
+        shutil.copyfile('config/setting.json',pfile_path)
+
+    with open(pfile_path) as profile:
+        setting = json.load(profile)
+
+
+    path     = setting['donwload_path']
+    sformat  = setting['download_format']
+    info     = setting['download_info']
+    errcha   = setting['error_cha']
+    uin      = setting['uin']
+
+    platform = setting['platform']
+    if platform == 'Auto':
+        platform = pf.system()
+
+
+    # cookies
+    cookies = ''
+
+    # load cookies from strings like this: 'aaa=bbb; ccc=ddd....'
+    cookies_str = ''
+    if cookies_str:
+        cookies = {}
+        for line in cookies_str.split(';'):
+            name,value=line.strip().split('=',1)
+            cookies[name]=value  
+
+    # load cookies if exist cookies.json
+    elif os.path.exists('config/cookies.json'):
+        with open('config/cookies.json') as f:
+            cookies = json.load(f)
+    return {
+        'path': path,
+        'sformat': sformat,
+        'info': info,
+        'errcha': errcha,
+        'uin': uin,
+        'platform': platform,
+        'cookies': cookies
+    }
