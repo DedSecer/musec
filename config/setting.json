@@ -4,5 +4,6 @@
     "download_format": "m4a",
     "download_info": true,
     "platform": "Auto",
-    "error_cha": null
+    "error_cha": null,
+    "cookies_str":""
 }
