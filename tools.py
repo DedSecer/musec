@@ -81,7 +81,6 @@ def load_setting():
     path     = setting['donwload_path']
     sformat  = setting['download_format']
     info     = setting['download_info']
-    errcha   = setting['error_cha']
     uin      = setting['uin']
 
     platform = setting['platform']
@@ -101,7 +100,6 @@ def load_setting():
         'path': path,
         'sformat': sformat,
         'info': info,
-        'errcha': errcha,
         'uin': uin,
         'platform': platform,
         'cookies': cookies
