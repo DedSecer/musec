@@ -14,16 +14,15 @@ uin = setting['uin']
 path = setting['path']
 sformat = setting['sformat']
 info = setting['info']
-errcha = setting['errcha']
 uin = setting['uin']
 cookies = setting['cookies']
 platform = setting['platform']
 
-def dl_song(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):
+def dl_song(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):
     asong = Musec(mid, platform, sformat=sformat)
-    asong.download(path, uin=uin, cookies=cookies, errcha=errcha, download_info=download_info)
+    asong.download(path, uin=uin, cookies=cookies, download_info=download_info)
 
-def dl_album(mid, ct=0, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):
+def dl_album(mid, ct=0, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):
     # ct:Start to download from ct
     aburl = 'https://y.qq.com/n/yqq/album/' + mid + '.html'
     headers = {
@@ -47,7 +46,6 @@ def dl_album(mid, ct=0, path=path, platform=platform, download_info=info, uin=ui
         download_info=download_info,
         uin=uin,
         cookies=cookies,
-        errcha=errcha,
         sformat=sformat,
         ct=ct,
         art=art,
@@ -56,7 +54,7 @@ def dl_album(mid, ct=0, path=path, platform=platform, download_info=info, uin=ui
 
 
 
-def dl_plist(lid, ct=0, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):
+def dl_plist(lid, ct=0, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):
     # Download songs from QQMusic playlist
     # ct:Start to download from ct
     headers = {
@@ -91,12 +89,11 @@ def dl_plist(lid, ct=0, path=path, platform=platform, download_info=info, uin=ui
         download_info=download_info,
         uin=uin,
         cookies=cookies,
-        errcha=errcha,
         sformat=sformat,
         ct=ct,
         list_n=dissname)
 
-def dl_mlist(mlist, ct=0, list_n='', art='' ,imgcon='', path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, errcha=errcha, sformat=sformat):   
+def dl_mlist(mlist, ct=0, list_n='', art='' ,imgcon='', path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):   
     # Download songs from songmid list
     # ct:Start to download from ct
     
@@ -121,7 +118,6 @@ def dl_mlist(mlist, ct=0, list_n='', art='' ,imgcon='', path=path, platform=plat
         scode=asong.download(apath,
             uin=uin,
             cookies=cookies,
-            errcha=errcha,
             download_info=download_info,
             originality=False)
 
