@@ -10,13 +10,12 @@ setting = load_setting()
 path = setting['path']
 sformat = setting['sformat']
 info = setting['info']
-errcha = setting['errcha']
 uin = setting['uin']
 cookies = setting['cookies']
 platform = setting['platform']
 
 
 
-#dl_song(mid, path, platform, info, uin, cookies, errcha, sformat)
-#dl_album(mid, ct=0, path, platform, info, uin, cookies, errcha, sformat)
-#dl_plist(mid, ct=0, path, platform, info, uin, cookies, errcha, sformat)
+#dl_song(mid, path, platform, info, uin, cookies, sformat)
+#dl_album(mid, ct=0, path, platform, info, uin, cookies, sformat)
+#dl_plist(mid, ct=0, path, platform, info, uin, cookies, sformat)

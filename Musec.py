@@ -50,14 +50,13 @@ class Musec():
 
 
 
-    def download(self, path, uin='0', cookies={}, errcha='', download_info=True, originality=True):
+    def download(self, path, uin='0', cookies={}, download_info=True, originality=True):
         self.get_download_url(uin, cookies)
         h = get(self.dlurl, cookies=cookies, verify=False, headers=self.headers)
 
         if h.status_code == 200:
             # filter error character
-            if not errcha:
-                errcha = tools.get_errcha(self.platform)
+            errcha = tools.get_errcha(self.platform)
             filename = re.sub(errcha, '-' , self.name) + '.' + self.sformat
             song_path = os.path.join(path, filename)
 
