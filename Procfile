@@ -1,1 +1,1 @@
-web: python3 app.py
+web: flask run --port=443
