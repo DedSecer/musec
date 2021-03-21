@@ -17,5 +17,5 @@ platform = setting['platform']
 
 
 #dl_song(mid, path, platform, info, uin, cookies, sformat)
-#dl_album(mid, ct=0, path, platform, info, uin, cookies, sformat)
-#dl_plist(mid, ct=0, path, platform, info, uin, cookies, sformat)
+#dl_album(mid, path, platform, info, uin, cookies, sformat, ct=0)
+#dl_plist(mid, path, platform, info, uin, cookies, sformat, ct=0)
