@@ -22,7 +22,7 @@ def dl_song(mid, path=path, platform=platform, download_info=info, uin=uin, cook
     asong = Musec(mid, platform, sformat=sformat)
     asong.download(path, uin=uin, cookies=cookies, download_info=download_info)
 
-def dl_album(mid, path=path, ct=0, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):
+def dl_album(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat, ct=0):
     # ct:Start to download from ct
     aburl = 'https://y.qq.com/n/yqq/album/' + mid + '.html'
     headers = {
@@ -54,7 +54,7 @@ def dl_album(mid, path=path, ct=0, platform=platform, download_info=info, uin=ui
 
 
 
-def dl_plist(lid, path=path, ct=0, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):
+def dl_plist(lid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat, ct=0):
     # Download songs from QQMusic playlist
     # ct:Start to download from ct
     headers = {
@@ -93,7 +93,7 @@ def dl_plist(lid, path=path, ct=0, platform=platform, download_info=info, uin=ui
         ct=ct,
         list_n=dissname)
 
-def dl_mlist(mlist, path=path, ct=0, list_n='', art='' ,imgcon='', platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):   
+def dl_mlist(mlist, path=path, list_n='', art='' ,imgcon='', platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat, ct=0):   
     # Download songs from songmid list
     # ct:Start to download from ct
     
