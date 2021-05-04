@@ -50,7 +50,7 @@ class Musec():
 
 
 
-    def download(self, path, uin='0', cookies={}, download_info=True, originality=True):
+    def download(self, path, uin='0', cookies={}, download_info=True):
         self.get_download_url(uin, cookies)
         h = get(self.dlurl, cookies=cookies, verify=False, headers=self.headers)
 
@@ -71,10 +71,4 @@ class Musec():
                     art=self.art,
                     alb=self.albn,
                     img=self.img)
-
-            if originality:
-                print(self.name + "\ndownload successful")
-        else:
-            if originality:
-                print('Fail to download %s,statu code:%d' % (self.name, h.status_code))
         return h.status_code

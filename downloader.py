@@ -20,7 +20,11 @@ platform = setting['platform']
 
 def dl_song(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat):
     asong = Musec(mid, platform, sformat=sformat)
-    asong.download(path, uin=uin, cookies=cookies, download_info=download_info)
+    scode = asong.download(path, uin=uin, cookies=cookies, download_info=download_info)
+    if scode == 200:
+        print(asong.name + "\ndownload successful")
+    else:
+        print('Fail to download %s,statu code:%d' % (asong.name, scode))
 
 def dl_album(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat, ct=0):
     # ct:Start to download from ct
@@ -115,11 +119,10 @@ def dl_mlist(mlist, path=path, list_n='', art='' ,imgcon='', platform=platform, 
     for n in list(range(ct, ln)):
         mid = mlist[n]
         asong = Musec(mid, platform=platform, art=art, img=imgcon, sformat=sformat)
-        scode=asong.download(apath,
+        scode = asong.download(apath,
             uin=uin,
             cookies=cookies,
-            download_info=download_info,
-            originality=False)
+            download_info=download_info)
 
         if scode == 200:
             print('%s download successful!\t[%d/%d]' % (asong.name, n+1, ln))
