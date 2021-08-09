@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import tools
 import re
+from bs4 import BeautifulSoup as BS
 from requests import get
 import os
 from Musec import Musec
@@ -28,20 +29,25 @@ def dl_song(mid, path=path, platform=platform, download_info=info, uin=uin, cook
 
 def dl_album(mid, path=path, platform=platform, download_info=info, uin=uin, cookies=cookies, sformat=sformat, ct=0):
     # ct:Start to download from ct
-    aburl = 'https://y.qq.com/n/yqq/album/' + mid + '.html'
+    aburl = 'http://y.qq.com/n/yqq/album/' + mid + '.html'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/'
                       '74.0.3729.169 Safari/537.36'
         }
     h = get(aburl, headers=headers, verify=False)
-    m_list= re.findall('''<a\s*href="//y.qq.com/n/yqq/song/(.*?).html"\s*title="''', h.text)
+    soup = BS(h.text,'html.parser')
+    m_list = []
+    for s in soup.select('span.songlist__songname_txt > a'):
+        m_list.append(re.match('/n/ryqq/songDetail/(.*?)', s.attrs['herf']))
 
     #album_info:
-    art = tools.del_cn(re.search('<a\shref=.*?data-mid=.*?title="(.*?)">', h.text, re.S).group(1))
-    art = unescape(art)
-    alb = re.search('''albumname : "(.*?)"''', h.text).group(1)
+    art = ''
+    for s in soup.select('a.data__singer_txt'):
+        art += s.string + ' / '
+    art = tools.del_cn(unescape(art[:-3]))
+    alb = unescape(soup.select('li.data_info__item_song > a')[0].string)
     alb = unescape(alb)
-    imgurl = 'https:'+re.search('''<img\sid="albumImg"\s*src="(.*?)"\s*onerror''', h.text).group(1)
+    imgurl = 'http:' + soup.select('span.data__cover > img.data__photo')
     imgcon = get(imgurl, headers=headers,verify=False).content
 
     dl_mlist(m_list,
@@ -73,7 +79,7 @@ def dl_plist(lid, path=path, platform=platform, download_info=info, uin=uin, coo
         'accept-encoding': 'gzip, deflate, br',
         'accept-language': 'zh-CN,zh;q=0.9'
     }
-    url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&new_format=1&disstid=%s&g_tk=1647959537&loginUin=2465216809&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0' \
+    url = 'http://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&new_format=1&disstid=%s&g_tk=1647959537&loginUin=2465216809&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0' \
         % (lid)
 
 

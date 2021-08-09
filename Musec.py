@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import tools
 from html import unescape
+from bs4 import BeautifulSoup as BS
 import re
 from requests import get
 import os
@@ -15,31 +16,36 @@ class Musec():
         self.sformat = sformat
 
         #Info
-        h=get('https://y.qq.com/n/yqq/song/%s.html' % (mid), verify=False, headers=self.headers)
-        self.name = unescape(re.search('''<h1 class="data__name_txt" .*?>(.*?)</h1>''', h.text).group(1))
+        h=get('http://y.qq.com/n/ryqq/songDetail/%s' % (mid), verify=False, headers=self.headers)
+        soup = BS(h.text, 'html.parser')
+
+        self.name = unescape(soup.select('div.data__name > h1')[0].string)
 
         if albn:
             self.albn = albn
         else:
             try:
-                self.albn = unescape(re.search('<li class="data_info__item">专辑：.*?title="(.*?)">', h.text).group(1))
+                self.albn = unescape(soup.select('li.data_info__item_song > a')[0].string)
             except AttributeError: # Song has no album
                 self.albn = ' '
 
         if img:
             self.img = img
         else:
-            imgul = re.search('<span class="data__cover">\s*?<img src="(.*?)"', h.text).group(1)
-            self.img = get('https:'+imgul, verify=False, headers=self.headers).content
+            imgul = soup.select('img.data__photo')[0].attrs['src']
+            self.img = get('http:'+imgul, verify=False, headers=self.headers).content
 
         if art:
             self.art = art
         else:
-            self.art = unescape(re.search('<div class="data__singer" title="(.*?)">',h.text).group(1))
+            art = ''
+            for s in soup.select('a.data__singer_txt'):
+                art += s.string + ' / '
+            self.art = tools.del_cn(unescape(art[:-3]))
 
     def get_download_url(self, uin='0', cookies={}):
         #get_vkey:
-        getvkurl = 'https://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":"%s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' \
+        getvkurl = 'http://u.y.qq.com/cgi-bin/musicu.fcg?&data={"req":{"param":{"guid":"%s"}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"%s","songmid":["%s"],"uin":"%s"}},"comm":{"uin":%s}}' \
                     % (self.guid, self.guid, self.mid, uin, uin)
 
         vkres = get(getvkurl, verify=False, headers=self.headers, cookies=cookies)

@@ -3,7 +3,7 @@
 
 ### requriments：
 * python3.x
-* requests、mutagen(python第三方库)
+* requests、mutagen、beautifulsoup4(python第三方库)
 
 #### Tips:此项目仅供学习和参考。
 
