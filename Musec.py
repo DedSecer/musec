@@ -32,7 +32,7 @@ class Musec():
         if img:
             self.img = img
         else:
-            imgul = soup.select('img.data__photo')[0].attrs['src']
+            imgul = soup.select('img.data__photo')[0].attrs['data-qar-def']
             self.img = get('http:'+imgul, verify=False, headers=self.headers).content
 
         if art:
