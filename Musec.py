@@ -32,8 +32,10 @@ class Musec():
         if img:
             self.img = img
         else:
-            imgul = soup.select('img.data__photo')[0].attrs['data-qar-def']
-            self.img = get('http:'+imgul, verify=False, headers=self.headers).content
+            part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (re.escape(self.name))
+            script = set(soup.select('script')) - set(soup.select('script[crossorigin=anonymous]'))
+            imgul = 'http:' + re.match(part, script.pop().string).group(1).replace('\\u002F', '/')
+            self.img = get(imgul, verify=False, headers=self.headers).content
 
         if art:
             self.art = art
