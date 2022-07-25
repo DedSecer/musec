@@ -26,16 +26,23 @@ class Musec():
         else:
             try:
                 self.albn = unescape(soup.select('li.data_info__item_song > a')[0].string)
-            except AttributeError: # Song has no album
+            except IndexError: # Song has no album
                 self.albn = ' '
 
         if img:
             self.img = img
         else:
-            part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (re.escape(self.name))
-            script = set(soup.select('script')) - set(soup.select('script[crossorigin=anonymous]'))
-            imgul = 'http:' + re.match(part, script.pop().string).group(1).replace('\\u002F', '/')
-            self.img = get(imgul, verify=False, headers=self.headers).content
+            part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (re.escape(self.name).replace('"', '\\\\"').replace('/','\\\\u002F'))
+            #part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (self.name.replace('"', '\\\\"').replace('/','\\\\u002F').replace('(', '\\(').replace(')', '\\)'))
+            scripts = set(soup.select('script')) - set(soup.select('script[crossorigin=anonymous]'))
+            for script in scripts:
+                imgurl = ''
+                try:
+                    imgurl = 'http:' + re.match(part, script.text).group(1).replace('\\u002F', '/')
+                    break
+                except AttributeError:
+                    pass
+            self.img = get(imgurl, verify=False, headers=self.headers).content
 
         if art:
             self.art = art
