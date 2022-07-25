@@ -38,16 +38,25 @@ def dl_album(mid, path=path, platform=platform, download_info=info, uin=uin, coo
     soup = BS(h.text,'html.parser')
     m_list = []
     for s in soup.select('span.songlist__songname_txt > a'):
-        m_list.append(re.match('/n/ryqq/songDetail/(.*?)', s.attrs['herf']))
+        m_list.append(re.match('/n/ryqq/songDetail/(.*)', s.attrs['href']).group(1))
 
     #album_info:
     art = ''
     for s in soup.select('a.data__singer_txt'):
         art += s.string + ' / '
     art = tools.del_cn(unescape(art[:-3]))
-    alb = unescape(soup.select('li.data_info__item_song > a')[0].string)
-    alb = unescape(alb)
-    imgurl = 'http:' + soup.select('span.data__cover > img.data__photo')
+    alb = unescape(soup.select('.data__name_txt')[0].string)
+
+    part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (re.escape(alb).replace('"', '\\\\"').replace('/','\\\\u002F'))
+    scripts = set(soup.select('script')) - set(soup.select('script[crossorigin=anonymous]'))
+    imgurl = ''
+    for script in scripts:
+        try:
+            imgurl = 'http:' + re.match(part, script.text).group(1).replace('\\u002F', '/')
+            break
+        except AttributeError:
+            pass
+    #imgurl = 'http:' + soup.select('span.data__cover > img.data__photo')[0].attrs['src']
     imgcon = get(imgurl, headers=headers,verify=False).content
 
     dl_mlist(m_list,
