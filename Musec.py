@@ -33,7 +33,6 @@ class Musec():
             self.img = img
         else:
             part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (re.escape(self.name).replace('"', '\\\\"').replace('/','\\\\u002F'))
-            #part = '.*?window.__INITIAL_DATA__ ={"detail":{"title":"%s","picurl":"(.*?)"' % (self.name.replace('"', '\\\\"').replace('/','\\\\u002F').replace('(', '\\(').replace(')', '\\)'))
             scripts = set(soup.select('script')) - set(soup.select('script[crossorigin=anonymous]'))
             for script in scripts:
                 imgurl = ''
